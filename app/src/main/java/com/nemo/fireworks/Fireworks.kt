@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +15,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +23,55 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.sqrt
 
 @Composable
-fun Firework(
+fun Fireworks(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        FlowerPetalRing(
+            flowerPetalRectSize = Size(100f, 100f),
+            numberOfFlowerPetal = 16,
+            flowerPetalColor = Color.Red,
+        )
+
+        FlowerPetalRing(
+            modifier = Modifier
+                .padding(32.dp),
+            flowerPetalRectSize = Size(100f, 100f),
+            numberOfFlowerPetal = 12,
+            flowerPetalColor = Color.Blue,
+        )
+
+        FlowerPetalRing(
+            modifier = Modifier
+                .padding(64.dp),
+            flowerPetalRectSize = Size(100f, 100f),
+            numberOfFlowerPetal = 11,
+            flowerPetalColor = Color.Yellow,
+        )
+
+        FlowerPetalRing(
+            modifier = Modifier
+                .padding(96.dp),
+            flowerPetalRectSize = Size(100f, 100f),
+            numberOfFlowerPetal = 7,
+            flowerPetalColor = Color.Green,
+        )
+
+        FlowerPetalRing(
+            modifier = Modifier
+                .padding(128.dp),
+            flowerPetalRectSize = Size(100f, 100f),
+            numberOfFlowerPetal = 3,
+            flowerPetalColor = Color.Cyan,
+        )
+    }
+}
+
+@Composable
+private fun FlowerPetalRing(
     modifier: Modifier = Modifier,
     flowerPetalRectSize: Size,
     numberOfFlowerPetal: Int,
@@ -76,55 +124,20 @@ private fun DrawScope.drawFlowerPetal(
                 0f,
             )
         }
-        drawPath(path, color)
+        drawPath(
+            path = path,
+            color = color,
+            style = Stroke(width = 4f),
+        )
     }
 }
 
 @Preview
 @Composable
-fun FireworkPreview() {
-    Box(
+fun FireworksPreview() {
+    Fireworks(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black),
-        contentAlignment = Alignment.Center,
-    ) {
-        Firework(
-            flowerPetalRectSize = Size(100f, 100f),
-            numberOfFlowerPetal = 16,
-            flowerPetalColor = Color.Red,
-        )
-
-        Firework(
-            modifier = Modifier
-                .padding(32.dp),
-            flowerPetalRectSize = Size(100f, 100f),
-            numberOfFlowerPetal = 12,
-            flowerPetalColor = Color.Blue,
-        )
-
-        Firework(
-            modifier = Modifier
-                .padding(64.dp),
-            flowerPetalRectSize = Size(100f, 100f),
-            numberOfFlowerPetal = 11,
-            flowerPetalColor = Color.Yellow,
-        )
-
-        Firework(
-            modifier = Modifier
-                .padding(96.dp),
-            flowerPetalRectSize = Size(100f, 100f),
-            numberOfFlowerPetal = 7,
-            flowerPetalColor = Color.Green,
-        )
-
-        Firework(
-            modifier = Modifier
-                .padding(128.dp),
-            flowerPetalRectSize = Size(100f, 100f),
-            numberOfFlowerPetal = 3,
-            flowerPetalColor = Color.Cyan,
-        )
-    }
+            .background(Color.Black)
+    )
 }
