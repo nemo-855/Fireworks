@@ -28,6 +28,7 @@ import kotlin.math.sqrt
 @Composable
 fun Fireworks(
     modifier: Modifier = Modifier,
+    percent: Float,
 ) {
     Box(
         modifier = modifier,
@@ -37,6 +38,7 @@ fun Fireworks(
             flowerPetalRectSize = Size(100f, 100f),
             numberOfFlowerPetal = 16,
             flowerPetalColor = Color.Red,
+            percent = percent,
         )
 
         FlowerPetalsRing(
@@ -45,6 +47,7 @@ fun Fireworks(
             flowerPetalRectSize = Size(100f, 100f),
             numberOfFlowerPetal = 12,
             flowerPetalColor = Color.Blue,
+            percent = percent,
         )
 
         FlowerPetalsRing(
@@ -53,6 +56,7 @@ fun Fireworks(
             flowerPetalRectSize = Size(100f, 100f),
             numberOfFlowerPetal = 11,
             flowerPetalColor = Color.Yellow,
+            percent = percent,
         )
 
         FlowerPetalsRing(
@@ -61,6 +65,7 @@ fun Fireworks(
             flowerPetalRectSize = Size(100f, 100f),
             numberOfFlowerPetal = 7,
             flowerPetalColor = Color.Green,
+            percent = percent,
         )
 
         FlowerPetalsRing(
@@ -69,6 +74,7 @@ fun Fireworks(
             flowerPetalRectSize = Size(100f, 100f),
             numberOfFlowerPetal = 3,
             flowerPetalColor = Color.Cyan,
+            percent = percent,
         )
     }
 }
@@ -79,6 +85,7 @@ private fun FlowerPetalsRing(
     flowerPetalRectSize: Size,
     numberOfFlowerPetal: Int,
     flowerPetalColor: Color,
+    percent: Float,
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -98,7 +105,8 @@ private fun FlowerPetalsRing(
                 drawFlowerPetal(
                     size = flowerPetalRectSize,
                     color = flowerPetalColor,
-                    angle = angle
+                    angle = angle,
+                    percent = percent,
                 )
             }
         }
@@ -155,13 +163,15 @@ fun FireworksPreview() {
         Fireworks(
             modifier = Modifier
                 .wrapContentHeight()
-                .background(Color.Black)
+                .background(Color.Black),
+            percent = 0.5f,
         )
 
         Fireworks(
             modifier = Modifier
                 .wrapContentHeight()
-                .background(Color.Black)
+                .background(Color.Black),
+            percent = 0.8f,
         )
     }
 }
