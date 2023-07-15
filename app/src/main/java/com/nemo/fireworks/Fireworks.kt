@@ -30,13 +30,13 @@ fun Fireworks(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        FlowerPetalRing(
+        FlowerPetalsRing(
             flowerPetalRectSize = Size(100f, 100f),
             numberOfFlowerPetal = 16,
             flowerPetalColor = Color.Red,
         )
 
-        FlowerPetalRing(
+        FlowerPetalsRing(
             modifier = Modifier
                 .padding(32.dp),
             flowerPetalRectSize = Size(100f, 100f),
@@ -44,7 +44,7 @@ fun Fireworks(
             flowerPetalColor = Color.Blue,
         )
 
-        FlowerPetalRing(
+        FlowerPetalsRing(
             modifier = Modifier
                 .padding(64.dp),
             flowerPetalRectSize = Size(100f, 100f),
@@ -52,7 +52,7 @@ fun Fireworks(
             flowerPetalColor = Color.Yellow,
         )
 
-        FlowerPetalRing(
+        FlowerPetalsRing(
             modifier = Modifier
                 .padding(96.dp),
             flowerPetalRectSize = Size(100f, 100f),
@@ -60,7 +60,7 @@ fun Fireworks(
             flowerPetalColor = Color.Green,
         )
 
-        FlowerPetalRing(
+        FlowerPetalsRing(
             modifier = Modifier
                 .padding(128.dp),
             flowerPetalRectSize = Size(100f, 100f),
@@ -71,7 +71,7 @@ fun Fireworks(
 }
 
 @Composable
-private fun FlowerPetalRing(
+private fun FlowerPetalsRing(
     modifier: Modifier = Modifier,
     flowerPetalRectSize: Size,
     numberOfFlowerPetal: Int,
@@ -134,7 +134,7 @@ private fun DrawScope.drawFlowerPetal(
 
 @Preview
 @Composable
-fun FireworksPreview() {
+fun FirewoRrksPreview() {
     Fireworks(
         modifier = Modifier
             .fillMaxSize()
