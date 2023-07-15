@@ -134,7 +134,7 @@ private fun DrawScope.drawFlowerPetal(
 
 @Preview
 @Composable
-fun FirewoRrksPreview() {
+fun FireworksPreview() {
     Fireworks(
         modifier = Modifier
             .fillMaxSize()
