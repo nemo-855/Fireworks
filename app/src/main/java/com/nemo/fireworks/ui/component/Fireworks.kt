@@ -1,4 +1,4 @@
-package com.nemo.fireworks
+package com.nemo.fireworks.ui.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -85,7 +85,7 @@ private fun FlowerPetalsRing(
     flowerPetalRectSize: Size,
     numberOfFlowerPetal: Int,
     flowerPetalColor: Color,
-    percent: Float,
+    percent: Float = 1.0f,
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -106,7 +106,7 @@ private fun FlowerPetalsRing(
                     size = flowerPetalRectSize,
                     color = flowerPetalColor,
                     angle = angle,
-                    percent = percent,
+                    displayRatio = percent,
                 )
             }
         }
@@ -117,9 +117,9 @@ private fun DrawScope.drawFlowerPetal(
     size: Size,
     color: Color,
     angle: Float = 0f,
-    percent: Float = 1.0f,
+    displayRatio: Float = 1.0f,
 ) {
-    rotate(degrees = angle) {
+    rotate(degrees = - angle) {
         val path = Path().apply {
             moveTo(0f, 0f)
             quadraticBezierTo(
@@ -137,8 +137,8 @@ private fun DrawScope.drawFlowerPetal(
             )
         }
         clipPath(path = path) {
-            val triangleWidth = size.width - (2 * size.width * percent)
-            val triangleHeight = size.height - (2 * size.height * percent)
+            val triangleWidth = size.width - (2 * size.width * displayRatio)
+            val triangleHeight = size.height - (2 * size.height * displayRatio)
 
             val trianglePath = Path().apply {
                 moveTo(size.width, triangleHeight)
@@ -173,5 +173,46 @@ fun FireworksPreview() {
                 .background(Color.Black),
             percent = 0.8f,
         )
+    }
+}
+
+@Preview
+@Composable
+fun FlowerPetalsRingPreview() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .background(Color.Black),
+        contentAlignment = Alignment.Center,
+    ) {
+        FlowerPetalsRing(
+            flowerPetalRectSize = Size(100f, 100f),
+            numberOfFlowerPetal = 12,
+            flowerPetalColor = Color.Red,
+            percent = 0.6f
+        )
+    }
+}
+
+@Preview
+@Composable
+fun FlowerPetalPreview() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .background(Color.Black),
+        contentAlignment = Alignment.Center,
+    ) {
+        Canvas(
+            modifier = Modifier
+        ) {
+            drawFlowerPetal(
+                size = Size(160f, 160f),
+                color = Color.Red,
+                displayRatio = 0.5f,
+            )
+        }
     }
 }
