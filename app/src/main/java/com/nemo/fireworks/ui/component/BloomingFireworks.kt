@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,13 +28,7 @@ fun BloomingFireworks() {
     ) {
         var percent by remember { mutableStateOf(0.0f) }
 
-        Fireworks(
-            percent = percent,
-            flowerPetalRectSize = Size(
-                width = 100f,
-                height = 100f,
-            ),
-        )
+        Fireworks(percent = percent)
 
         Slider(
             modifier = Modifier.padding(horizontal = 16.dp),
