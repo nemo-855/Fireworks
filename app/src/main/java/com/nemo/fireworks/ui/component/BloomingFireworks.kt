@@ -12,9 +12,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Alignment
 
 @Composable
 fun BloomingFireworks() {
@@ -23,10 +25,17 @@ fun BloomingFireworks() {
             .fillMaxSize()
             .background(Color.Black),
         verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         var percent by remember { mutableStateOf(0.0f) }
 
-        Fireworks(percent = percent)
+        Fireworks(
+            percent = percent,
+            flowerPetalRectSize = Size(
+                width = 100f,
+                height = 100f,
+            ),
+        )
 
         Slider(
             modifier = Modifier.padding(horizontal = 16.dp),

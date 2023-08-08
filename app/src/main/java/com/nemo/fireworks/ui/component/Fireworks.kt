@@ -4,12 +4,11 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,22 +19,36 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import kotlin.math.sqrt
 
 @Composable
 fun Fireworks(
     modifier: Modifier = Modifier,
     percent: Float,
+    flowerPetalRectSize: Size,
 ) {
-    Box(
+    BoxWithConstraints(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
+        val fireworksFrameSize = minOf(
+            maxWidth,
+            maxHeight,
+        )
+
         FlowerPetalsRing(
-            flowerPetalRectSize = Size(100f, 100f),
+            modifier = Modifier
+                .size(fireworksFrameSize * 0.7f),
+            flowerPetalRectSize = flowerPetalRectSize,
+            numberOfFlowerPetal = 20,
+            flowerPetalColor = Color.Magenta,
+            percent = percent,
+        )
+
+        FlowerPetalsRing(
+            modifier = Modifier
+                .size(fireworksFrameSize * 0.6f),
+            flowerPetalRectSize = flowerPetalRectSize,
             numberOfFlowerPetal = 16,
             flowerPetalColor = Color.Red,
             percent = percent,
@@ -43,8 +56,8 @@ fun Fireworks(
 
         FlowerPetalsRing(
             modifier = Modifier
-                .padding(32.dp),
-            flowerPetalRectSize = Size(100f, 100f),
+                .size(fireworksFrameSize * 0.5f),
+            flowerPetalRectSize = flowerPetalRectSize,
             numberOfFlowerPetal = 12,
             flowerPetalColor = Color.Blue,
             percent = percent,
@@ -52,8 +65,8 @@ fun Fireworks(
 
         FlowerPetalsRing(
             modifier = Modifier
-                .padding(64.dp),
-            flowerPetalRectSize = Size(100f, 100f),
+                .size(fireworksFrameSize * 0.4f),
+            flowerPetalRectSize = flowerPetalRectSize,
             numberOfFlowerPetal = 11,
             flowerPetalColor = Color.Yellow,
             percent = percent,
@@ -61,8 +74,8 @@ fun Fireworks(
 
         FlowerPetalsRing(
             modifier = Modifier
-                .padding(96.dp),
-            flowerPetalRectSize = Size(100f, 100f),
+                .size(fireworksFrameSize * 0.3f),
+            flowerPetalRectSize = flowerPetalRectSize,
             numberOfFlowerPetal = 7,
             flowerPetalColor = Color.Green,
             percent = percent,
@@ -70,8 +83,8 @@ fun Fireworks(
 
         FlowerPetalsRing(
             modifier = Modifier
-                .padding(128.dp),
-            flowerPetalRectSize = Size(100f, 100f),
+                .size(fireworksFrameSize * 0.2f),
+            flowerPetalRectSize = flowerPetalRectSize,
             numberOfFlowerPetal = 3,
             flowerPetalColor = Color.Cyan,
             percent = percent,
@@ -87,28 +100,19 @@ private fun FlowerPetalsRing(
     flowerPetalColor: Color,
     percent: Float = 1.0f,
 ) {
-    BoxWithConstraints(
+    Canvas(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .aspectRatio(1f)
     ) {
-        val pieceLength = with(LocalDensity.current) { constraints.maxWidth.toDp() }.value
-        val padding = (sqrt(2f) - 1) / 2 * pieceLength
-
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding.dp)
-        ) {
-            for (i in 0 until numberOfFlowerPetal) {
-                val angle = (360 / numberOfFlowerPetal * i).toFloat()
-                drawFlowerPetal(
-                    size = flowerPetalRectSize,
-                    color = flowerPetalColor,
-                    angle = angle,
-                    displayRatio = percent,
-                )
-            }
+        for (i in 0 until numberOfFlowerPetal) {
+            val angle = (360 / numberOfFlowerPetal * i).toFloat()
+            drawFlowerPetal(
+                size = flowerPetalRectSize,
+                color = flowerPetalColor,
+                angle = angle,
+                displayRatio = percent,
+            )
         }
     }
 }
@@ -159,21 +163,13 @@ private fun DrawScope.drawFlowerPetal(
 @Preview
 @Composable
 fun FireworksPreview() {
-    Column {
-        Fireworks(
-            modifier = Modifier
-                .wrapContentHeight()
-                .background(Color.Black),
-            percent = 0.5f,
-        )
-
-        Fireworks(
-            modifier = Modifier
-                .wrapContentHeight()
-                .background(Color.Black),
-            percent = 0.8f,
-        )
-    }
+    Fireworks(
+        modifier = Modifier
+            .wrapContentSize()
+            .background(Color.Black),
+        percent = 0.5f,
+        flowerPetalRectSize = Size(20f, 20f),
+    )
 }
 
 @Preview
