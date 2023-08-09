@@ -1,5 +1,6 @@
 package com.nemo.fireworks.ui.component
 
+import androidx.annotation.IntRange
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,33 +24,44 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun Fireworks(
     modifier: Modifier = Modifier,
-    percent: Float,
     uiModel: FireworksUiModel = FireworksUiModel.DEFAULT,
 ) {
     BoxWithConstraints(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        uiModel.getFireworksRingUiModels().forEach {
-            FlowerPetalsRing(
-                modifier = Modifier.size(minOf(maxWidth, maxHeight) * it.displayMagnification),
-                flowerPetalRectSize = it.flowerPetalRectSize,
-                numberOfFlowerPetal = it.numberOfFlowerPetal,
-                flowerPetalColor = it.color,
-                percent = percent,
-            )
+        for (index in 0 until uiModel.numberOfRings) {
+            val displayMagnification = uiModel.getFireworksRingDisplayMagnification(index)
+            Canvas(
+                modifier = Modifier
+                    .size(minOf(maxWidth, maxHeight) * displayMagnification)
+            ) {
+                val numberOfFlowerPetals = uiModel.getNumberOfFlowerPetals(index)
+                for (i in 0 until numberOfFlowerPetals) {
+                    val angle = (360 / numberOfFlowerPetals * i).toFloat()
+                    drawFlowerPetal(
+                        size = uiModel.flowerPetalRectSize,
+                        color = uiModel.getColor(index),
+                        angle = angle,
+                        displayRatio = uiModel.flowerPetalsDisplayRatio,
+                    )
+                }
+            }
         }
     }
 }
 
 data class FireworksUiModel(
+    @IntRange(from = 2, to = 12)
     val numberOfRings: Int,
     val flowerPetalRectSize: Size,
+    val flowerPetalsDisplayRatio: Float,
 ) {
     companion object {
         val DEFAULT = FireworksUiModel(
             numberOfRings = 6,
             flowerPetalRectSize = Size(100f, 100f),
+            flowerPetalsDisplayRatio = 1.0f,
         )
         private val colors = listOf(
             Color.Cyan,
@@ -64,47 +76,16 @@ data class FireworksUiModel(
         private const val maxRingDisplayMagnification = 0.7f
     }
 
-    fun getFireworksRingUiModels(): List<FireworksRingUiModel> {
-        return (0 until numberOfRings).mapIndexed { index, _ ->
-            FireworksRingUiModel(
-                color = colors[index % colors.size],
-                numberOfFlowerPetal = primaryNumberOfFlowerPetal + index * 2,
-                flowerPetalRectSize = flowerPetalRectSize,
-                displayMagnification = (maxRingDisplayMagnification - primaryRingDisplayMagnification) * (index.toFloat() / (numberOfRings - 1)) + primaryRingDisplayMagnification,
-            )
-        }
+    fun getColor(index: Int): Color {
+        return colors[index % colors.size]
     }
-}
 
-data class FireworksRingUiModel(
-    val color: Color,
-    val numberOfFlowerPetal: Int,
-    val flowerPetalRectSize: Size,
-    val displayMagnification: Float,
-)
+    fun getNumberOfFlowerPetals(index: Int): Int {
+        return primaryNumberOfFlowerPetal + index * 2
+    }
 
-@Composable
-private fun FlowerPetalsRing(
-    modifier: Modifier = Modifier,
-    flowerPetalRectSize: Size,
-    numberOfFlowerPetal: Int,
-    flowerPetalColor: Color,
-    percent: Float = 1.0f,
-) {
-    Canvas(
-        modifier = modifier
-            .fillMaxSize()
-            .aspectRatio(1f)
-    ) {
-        for (i in 0 until numberOfFlowerPetal) {
-            val angle = (360 / numberOfFlowerPetal * i).toFloat()
-            drawFlowerPetal(
-                size = flowerPetalRectSize,
-                color = flowerPetalColor,
-                angle = angle,
-                displayRatio = percent,
-            )
-        }
+    fun getFireworksRingDisplayMagnification(index: Int): Float {
+        return (maxRingDisplayMagnification - primaryRingDisplayMagnification) * (index.toFloat() / (numberOfRings - 1)) + primaryRingDisplayMagnification
     }
 }
 
@@ -158,27 +139,12 @@ fun FireworksPreview() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black),
-        percent = 0.5f,
-    )
-}
-
-@Preview
-@Composable
-fun FlowerPetalsRingPreview() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f)
-            .background(Color.Black),
-        contentAlignment = Alignment.Center,
-    ) {
-        FlowerPetalsRing(
+        uiModel = FireworksUiModel(
+            numberOfRings = 6,
             flowerPetalRectSize = Size(100f, 100f),
-            numberOfFlowerPetal = 12,
-            flowerPetalColor = Color.Red,
-            percent = 0.6f
-        )
-    }
+            flowerPetalsDisplayRatio = 0.5f,
+        ),
+    )
 }
 
 @Preview
@@ -197,7 +163,6 @@ fun FlowerPetalPreview() {
             drawFlowerPetal(
                 size = Size(160f, 160f),
                 color = Color.Red,
-                displayRatio = 0.5f,
             )
         }
     }
